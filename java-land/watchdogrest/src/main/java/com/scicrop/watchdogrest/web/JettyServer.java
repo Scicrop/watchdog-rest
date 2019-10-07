@@ -28,10 +28,10 @@ public class JettyServer {
         
 
         
-        String webroot = "./web";
+    
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirAllowed(true);
-        resourceHandler.setResourceBase("/tmp/");
+        resourceHandler.setResourceBase("C:\\mdk\\dev\\watchdog-rest\\static");
         ContextHandler contextHandler= new ContextHandler("/static");
         contextHandler.setHandler(resourceHandler);
         
