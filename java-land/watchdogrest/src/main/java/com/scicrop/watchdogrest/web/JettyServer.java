@@ -14,8 +14,13 @@ import com.scicrop.watchdogrest.web.servlets.ArtifactsServlet;
 
 public class JettyServer {
 	
+	private String staticPathStr;
 	private Server server;
-	 
+	
+	public JettyServer(String staticPathStr) {
+		this.staticPathStr = staticPathStr;
+	}
+	
     public void start() throws Exception {
         server = new Server();
         ServerConnector connector = new ServerConnector(server);
@@ -31,7 +36,7 @@ public class JettyServer {
     
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirAllowed(true);
-        resourceHandler.setResourceBase("C:\\mdk\\dev\\watchdog-rest\\static");
+        resourceHandler.setResourceBase(staticPathStr);
         ContextHandler contextHandler= new ContextHandler("/static");
         contextHandler.setHandler(resourceHandler);
         

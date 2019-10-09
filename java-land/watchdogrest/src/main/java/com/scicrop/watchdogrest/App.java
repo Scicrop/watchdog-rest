@@ -1,21 +1,29 @@
 package com.scicrop.watchdogrest;
 
+import java.io.File;
+
 import com.scicrop.watchdogrest.web.JettyServer;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
+public class App {
     public static void main( String[] args )
     {
-        JettyServer server = new JettyServer();
-        try {
-			server.start();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	if(args == null || args.length == 0 || args[0] == null) {
+    		System.err.println("Invalid static path.");
+    		System.exit(1);
+    	}else {
+    		File staticPath = new File(args[0]);
+    		if(staticPath.exists() && staticPath.isDirectory()) {
+    			JettyServer server = new JettyServer(args[0]);
+    	        try {
+    				server.start();
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    			}
+    		}else {
+    			System.err.println("Invalid static path.");
+        		System.exit(1);
+    		}
+    	}
+        
     }
 }

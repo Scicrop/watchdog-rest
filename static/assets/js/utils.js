@@ -8,29 +8,12 @@ let _socio_ambiental = false;
 let _produtividade = false;
 let _payload = null;
 
-
-
-loadjscssfile("assets/class/Car.class.js", "js");
-loadjscssfile("assets/class/City.class.js", "js");
-loadjscssfile("assets/class/GenericGeom.class.js", "js");
-loadjscssfile("assets/class/GenericType.class.js", "js");
-loadjscssfile("assets/class/Incra.class.js", "js");
-loadjscssfile("assets/class/Province.class.js", "js");
-loadjscssfile("assets/class/User.class.js", "js");
-loadjscssfile("assets/class/Portfolio.class.js", "js");
-loadjscssfile("assets/class/Alert.class.js", "js");
-loadjscssfile("assets/class/Economic.class.js", "js");
-loadjscssfile("assets/class/Search.class.js", "js");
-loadjscssfile("assets/class/Credito.class.js", "js");
-loadjscssfile("assets/class/LandCoverage.class.js", "js");
-
 if(window.location.pathname == "/index.html" || window.location.pathname == "/registro.html" || window.location.pathname  == '/'){
 
 }else{
-		_payload = parseJwt(jwt);
+		
 		buildLeftPane();
 		buildHeader();
-		checkBuscas();
 }
 
 function jump(h){
@@ -43,23 +26,7 @@ function removeElement(elementId) {
     element.parentNode.removeChild(element);
 }
 
-function checkBuscas(){
-	if(_payload.socio_ambiental > 0){
-		_socio_ambiental = true;
-	}
-	if(_payload.uso_terra > 0){
-		_uso_terra = true;
-	}
-	if(_payload.valoracao > 0){
-		_valoracao = true;
-	}
-	if(_payload.registral > 0){
-		_registral = true;
-	}
-	if(_payload.produtividade > 0){
-		_produtividade = true;
-	}
-}
+
 function parseJwt (token) {
 	var base64Url = token.split('.')[1];
 	var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -117,11 +84,7 @@ function buildHeader(){
 		</div>
 
 		<div class="user-area dropdown float-right">
-		<a href="#" class="dropdown-toggle active" data-toggle="dropdown"
-		aria-haspopup="true" aria-expanded="false"> <img
-		class="user-avatar rounded-circle" src="images/1.png"
-		alt="User Avatar">&nbsp;&nbsp;${_payload.name.split(' ')[0]}
-		</a>
+		
 
 		<div class="user-menu dropdown-menu">
 		<!-- <a class="nav-link" href="#"><i class="fa fa- user"></i>Perfil</a>
