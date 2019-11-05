@@ -88,3 +88,22 @@ jQuery(document).ready(function($) {
 
 
 });
+
+	let description = '';
+	let listHtml = '';
+	let cardHtml = '';
+		let levelType = 'list-group-item-primary';
+		if(data[i].level == 1) levelType = 'list-group-item-danger';
+		if(data[i].response.description != null) description = ' ['+data[i].response.description+']';
+		else description = '';
+		if(data[i].style == 'list') listHtml= listHtml + '<a href="#" class="list-group-item list-group-item-action '+levelType+'"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;'+data[i].serviceName+': '+data[i].response.value+description+'</a>\n';
+		else if(data[i].style == 'card') cardHtml = cardHtml + parseCard(data[i].serviceName, data[i].response.value+description, data[i].level);
+	}
+	document.getElementById("alert-list").innerHTML = listHtml;
+	document.getElementById("alert-card").innerHTML = cardHtml;
+}
+function parseCard(name, description, level){
+	let levelType = 'bg-primary';
+	if(level == 1) levelType = 'bg-danger';
+	let cardHtml = '<div class="card text-white '+levelType+' mb-3"><div class="card-header">'+name+'</div><div class="card-body"><h1 class="card-title">'+description+'</h1></div></div>';
+	return cardHtml;
