@@ -24,7 +24,7 @@ public class AppTest {
 		watchdogResponseEntity.setMonitored_service("test");
 		watchdogResponseEntity.setCheck_timestamp(new Date().getTime());
 		watchdogResponseEntity.setDescription("test");
-		watchdogResponseEntity.setRowcount(0);
+		//watchdogResponseEntity.setRowcount(0);
 		watchdogResponseEntity.setRoot_uri("test");
 		
 		System.out.println(watchdogResponseEntity.toString());
