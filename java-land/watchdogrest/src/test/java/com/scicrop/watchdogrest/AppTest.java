@@ -12,13 +12,19 @@ import com.scicrop.watchdogrest.entites.WatchdogResponseEntity;
 public class AppTest {
 	
 	@Test
-	public void test() {
+	public void test() throws Exception {
+		
+		String response = IOHelper.getInstance().getStringFromUrl("https://dashboard.scicrop.com/pages/register.php", "GET");
+		String hash = IOHelper.getInstance().getHexHashFromBytes(response.getBytes(), "md5");
+		
+		System.out.println(hash);
+		
 		
 		WatchdogResponseEntity watchdogResponseEntity = new WatchdogResponseEntity();
 		watchdogResponseEntity.setMonitored_service("test");
 		watchdogResponseEntity.setCheck_timestamp(new Date().getTime());
 		watchdogResponseEntity.setDescription("test");
-		watchdogResponseEntity.setRowcount(0);
+		//watchdogResponseEntity.setRowcount(0);
 		watchdogResponseEntity.setRoot_uri("test");
 		
 		System.out.println(watchdogResponseEntity.toString());
