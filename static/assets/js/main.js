@@ -71,8 +71,6 @@ function backSourceContent(){
 }
 
 function callbackGetAltertsOut(data){
-	console.log(full_time_count);
-	console.log(data);
 	let description = '';
 	let listHtml = '';
 	let cardHtml = '';

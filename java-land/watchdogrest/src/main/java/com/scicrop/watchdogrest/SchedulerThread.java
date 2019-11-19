@@ -65,7 +65,6 @@ public class SchedulerThread extends Thread {
 							
 						case "FULL":
 							wr = new WatchdogResponseEntity();
-							System.out.println("FULL ----> "+serviceEntity.getUrl());
 							wr.setValue(serviceEntity.getUrl());
 							service.setResponse(wr );							
 							break;
