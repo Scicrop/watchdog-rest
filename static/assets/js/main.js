@@ -1,3 +1,8 @@
+var full_time_count = 0;
+var source_content = "";
+var FULL_SETTING = 2;
+var is_full_enabled = false;
+
 $.noConflict();
 
 jQuery(document).ready(function($) {
@@ -6,7 +11,7 @@ jQuery(document).ready(function($) {
 });
 
 function reload(){
-	setTimeout(function(){ readAlerts(); }, 30000);
+	setInterval(function(){ readAlerts(); }, 30000);
 }
 
 
@@ -22,14 +27,14 @@ function getDateTime(){
         [addZero(now.getHours()),
         addZero(now.getMinutes())].join(":"),
         now.getHours() >= 12 ? "PM" : "AM"].join(" ");
-    document.getElementById("clock").innerHTML = strDateTime;
+    document.getElementById("navBarAlert").innerHTML = strDateTime;
 }
 
 
 function readAlerts(){
-
+	if(is_full_enabled == false && full_time_count < FULL_SETTING) getDateTime();
 	getAltertsOut(function(data) {callbackGetAltertsOut(data);})
-
+	full_time_count++;
 }
 
 
@@ -50,8 +55,22 @@ function getAltertsOut(callback){
 	});
 }
 
+function setFullIframe(url){
+	source_content = document.getElementById('content').innerHTML;
+	document.getElementById('content').innerHTML = "";
+	document.getElementById('full_iframe').style.width="100%";
+	document.getElementById('full_iframe').style.height="1000px";
+	document.getElementById('full_iframe').src = url;
+}
+
+function backSourceContent(){
+	document.getElementById('full_iframe').style.width="1px";
+	document.getElementById('full_iframe').style.height="1px";
+	document.getElementById('full_iframe').src = "#";
+	document.getElementById('content').innerHTML = source_content;
+}
+
 function callbackGetAltertsOut(data){
-	console.log(data);
 	let description = '';
 	let listHtml = '';
 	let cardHtml = '';
@@ -62,9 +81,19 @@ function callbackGetAltertsOut(data){
 		else description = '';
 		if(data[i].style == 'list') listHtml= listHtml + '<a href="#" class="list-group-item list-group-item-action '+levelType+'"><i class="fa fa-check" aria-hidden="true"></i> &nbsp;'+data[i].serviceName+': '+data[i].response.value+description+'</a>\n';
 		else if(data[i].style == 'card') cardHtml = cardHtml + parseCard(data[i].serviceName, data[i].response.value+description, data[i].level);
+		else if(data[i].style == 'full' && full_time_count == FULL_SETTING){
+			 setFullIframe(data[i].response.value);
+			 is_full_enabled = true
+		}
 	}
-	document.getElementById("alert-list").innerHTML = listHtml;
-	document.getElementById("alert-card").innerHTML = cardHtml;
+	if(is_full_enabled && full_time_count > FULL_SETTING){
+		full_time_count = 0;
+		is_full_enabled = false;
+		backSourceContent();
+	}else if(is_full_enabled == false && full_time_count < FULL_SETTING){
+		document.getElementById("alert-list").innerHTML = listHtml;
+		document.getElementById("alert-card").innerHTML = cardHtml;
+	}
 }
 
 function parseCard(name, description, level){

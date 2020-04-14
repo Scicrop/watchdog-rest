@@ -14,7 +14,7 @@ public class AppTest {
 	@Test
 	public void test() throws Exception {
 		
-		String response = IOHelper.getInstance().getStringFromUrl("https://dashboard.scicrop.com/pages/register.php", "GET");
+		String response = IOHelper.getInstance().getStringFromUrl("https://scicrop.com/images/new-site/logo-scicrop.png", "GET");
 		String hash = IOHelper.getInstance().getHexHashFromBytes(response.getBytes(), "md5");
 		
 		System.out.println(hash);

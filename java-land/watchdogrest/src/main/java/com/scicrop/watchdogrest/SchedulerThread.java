@@ -32,12 +32,18 @@ public class SchedulerThread extends Thread {
 						service.setServiceName(serviceEntity.getServiceName());
 						service.setStyle(serviceEntity.getStyle());
 						String response = null;
+						
+						
+						
 						switch (serviceEntity.getType().toUpperCase()) {
 						case "REST":
 							try {
 								response = IOHelper.getInstance().getStringFromUrlBasicAuth(serviceEntity.getUrl(), null, serviceEntity.getUser(), serviceEntity.getPassword(), serviceEntity.getMethod().toUpperCase());
 								wr = gson.fromJson(response, WatchdogResponseEntity.class);
 							}catch (Exception e) {
+								
+								e.printStackTrace();
+								
 								wr = new WatchdogResponseEntity();
 								wr.setValue(null);
 							}
@@ -51,25 +57,32 @@ public class SchedulerThread extends Thread {
 							try {
 								response = IOHelper.getInstance().getStringFromUrl(serviceEntity.getUrl(), "GET");
 								hash = IOHelper.getInstance().getHexHashFromBytes(response.getBytes(), serviceEntity.getMethod());
-							}catch(Exception e) {}
-							wr = new WatchdogResponseEntity();
+							}catch(Exception e) {e.printStackTrace();}
+							wr = new WatchdogResponseEntity();				
 							wr.setValue(hash);
-							//wr.setDescription(null);
 							service.setResponse(wr );
-
+							break;
+							
+						case "FULL":
+							wr = new WatchdogResponseEntity();
+							wr.setValue(serviceEntity.getUrl());
+							service.setResponse(wr );							
+							break;
+							
 						default:
 							break;
 						}
 
 
-						int level = evalResponse(wr.getValue(), serviceEntity.getExpected());
+						
+						int level = evalResponse(service.getResponse().getValue(), serviceEntity.getExpected());
 						service.setLevel(level);
-
-
 						servicesOut.add(service);
+						
+						
+						
 
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -126,7 +139,7 @@ public class SchedulerThread extends Thread {
 				}
 
 			}else {
-				if(exp[1].equals(value) && exp[0].equals("=="))  level = 0; else level = 1;
+				if(exp != null && exp.length == 2 && exp[1].equals(value) && exp[0].equals("=="))  level = 0; else level = 1;
 			}
 		}
 
